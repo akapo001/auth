@@ -1,0 +1,7 @@
+inmotion:
+  user:
+    username: user
+    password: pass12345
+  admin:
+    username: admin
+    password: pass12345
