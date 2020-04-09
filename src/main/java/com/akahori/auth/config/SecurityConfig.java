@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -23,6 +23,9 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static String ROLE_USER = "USER";
     private static String ROLE_ADMIN = "ADMIN";
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -80,16 +83,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UserDto support = supportUser();
         UserDto admin = adminUser();
 
+        String supportPass = passwordEncoder.encode(support.getPassword());
+        String adminPass = passwordEncoder.encode(admin.getPassword());
+        log.info(supportPass);
+        log.info(adminPass);
+
         auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser(support.getUsername()).password(support.getPassword()).roles(ROLE_USER)
+                .passwordEncoder(passwordEncoder)
+                .withUser(support.getUsername()).password(supportPass).roles(ROLE_USER)
                 .and()
-                .withUser(admin.getUsername()).password(admin.getPassword()).roles(ROLE_ADMIN);
+                .withUser(admin.getUsername()).password(adminPass).roles(ROLE_ADMIN);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
