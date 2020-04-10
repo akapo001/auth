@@ -25,11 +25,11 @@ public class UserModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(enabled) {
-            return AuthorityUtils.createAuthorityList(SecurityConfig.ROLE_USER, SecurityConfig.ROLE_ADMIN);
+        if(name.equals("admin")) {
+            return AuthorityUtils.createAuthorityList("ROLE_ADMIN");
         }
         else  {
-            return AuthorityUtils.createAuthorityList(SecurityConfig.ROLE_USER);
+            return AuthorityUtils.createAuthorityList("ROLE_USER");
         }
     }
 
