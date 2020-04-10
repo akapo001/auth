@@ -1,7 +1,15 @@
-inmotion:
+spring:
+  datasource:
+    url:  jdbc:postgresql://192.168.50.10:5432/postgres
+    username: root
+    password: root
+    driverClassName: org.postgresql.Driver
   user:
     username: user
     password: pass12345
   admin:
     username: admin
     password: pass12345
+logging.level.: DEBUG
+logging.level.root: DEBUG
+logging.level.ROOT: DEBUG

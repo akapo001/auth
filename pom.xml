@@ -85,6 +85,26 @@
 			<artifactId>spring-boot-starter-logging</artifactId>
 			<version>2.2.6.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.dbflute</groupId>
+			<artifactId>dbflute-runtime</artifactId>
+			<version>1.2.0-patch20190620-RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

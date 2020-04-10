@@ -1,9 +1,7 @@
 package com.akahori.auth.config;
 
-import com.akahori.auth.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,7 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -21,17 +20,19 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private static String ROLE_USER = "USER";
-    private static String ROLE_ADMIN = "ADMIN";
+    public static String ROLE_USER = "USER";
+    public static String ROLE_ADMIN = "ADMIN";
 
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    UserDetailsService userDetailsService;
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/user").hasAnyRole(ROLE_USER, ROLE_ADMIN)
-                .antMatchers("/admin").hasRole(ROLE_ADMIN)
                 .and()
 
                 .formLogin()
@@ -80,36 +81,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        UserDto support = supportUser();
-        UserDto admin = adminUser();
-
-        String supportPass = passwordEncoder.encode(support.getPassword());
-        String adminPass = passwordEncoder.encode(admin.getPassword());
-        log.info(supportPass);
-        log.info(adminPass);
-
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser(support.getUsername()).password(supportPass).roles(ROLE_USER)
-                .and()
-                .withUser(admin.getUsername()).password(adminPass).roles(ROLE_ADMIN);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    @ConfigurationProperties("inmotion.admin")
-    public UserDto adminUser() {
-        return new UserDto();
-    }
-
-    @Bean
-    @ConfigurationProperties("inmotion.user")
-    public UserDto supportUser() {
-        return new UserDto();
+//        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
 
 }
