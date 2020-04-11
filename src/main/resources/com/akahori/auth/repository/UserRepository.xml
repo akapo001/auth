@@ -4,4 +4,22 @@
     <select id="selectByUser" parameterType="java.lang.String" resultType="com.akahori.auth.model.UserModel">
         SELECT id, name, password, enabled FROM t_user where id = #{id};
     </select>
+
+    <insert id="save" parameterType="com.akahori.auth.model.UserModel">
+        INSERT INTO
+        t_user
+        (
+        id,
+        name,
+        password,
+        enabled
+        )
+        VALUES
+        (
+        #{id},
+        #{name},
+        #{password},
+        #{enabled}
+        )
+    </insert>
 </mapper>

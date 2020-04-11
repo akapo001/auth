@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/", "/login", "/account", "/account/*").permitAll() // 認証なしでアクセス可能なパス
                 .antMatchers("/user").hasAnyRole(ROLE_USER, ROLE_ADMIN)
                 .antMatchers("/admin").hasRole(ROLE_ADMIN)
                 .and()
