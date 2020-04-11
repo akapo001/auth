@@ -22,12 +22,12 @@
 </head>
 <body>
 <div class="container">
-    <form class="form-account" method="post" th:action="@{/account}" th:object="${accountForm}">
+    <form class="form-signin" method="post" th:action="@{/account}" th:object="${accountForm}">
         <div class="alert alert-dismissible alert-danger" th:if="${errorMessage}">
             <button type="button" class="close" data-dismiss="alert">×</button>
             <p th:text="${errorMessage}"></p>
         </div>
-        <h2 class="form-signin-heading">Please sign in</h2>
+        <h2 class="form-signin-heading">Create Account</h2>
         <label for="username" class="sr-only">Username</label>
         <input type="text" id="username" name="username" class="form-control" placeholder="UserName"/>
         <label for="password" class="sr-only">Password</label>
