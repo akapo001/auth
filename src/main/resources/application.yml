@@ -4,12 +4,6 @@ spring:
     username: root
     password: root
     driverClassName: org.postgresql.Driver
-  user:
-    username: user
-    password: pass12345
-  admin:
-    username: admin
-    password: pass12345
 logging.level.: DEBUG
 logging.level.root: DEBUG
 logging.level.ROOT: DEBUG
